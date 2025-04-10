@@ -17,10 +17,9 @@ parser.add_argument("--lr", type=float, default=0.001, help="Learning rate (defa
 args = parser.parse_args()
 
 # Cấu hình từ argparse
-TRAIN_CSV_PATH = "data/train_aug.csv"
+TRAIN_CSV_PATH = "data/train.csv"
 VAL_CSV_PATH = "data/val.csv"
 IMG_DIR = "data/images/"
-IMG_DIR_AUG = "data/images_aug/"
 EPOCHS = args.epochs
 BATCH_SIZE = args.batch_size
 LEARNING_RATE = args.lr
@@ -30,7 +29,6 @@ NUM_CLASSES = 3
 train_dataset = FishDatasetWithAugmentation(
     csv_file=TRAIN_CSV_PATH,
     img_dir=IMG_DIR,
-    img_dir_aug=IMG_DIR_AUG,
     transform=None,
     aug_transform=aug_transform,  
 )
@@ -38,7 +36,6 @@ train_dataset = FishDatasetWithAugmentation(
 val_dataset = FishDatasetWithAugmentation(
     csv_file=VAL_CSV_PATH,
     img_dir=IMG_DIR,
-    img_dir_aug=IMG_DIR_AUG,
     transform=basic_transform,
 )
 train_dataloader = DataLoader(
@@ -55,7 +52,7 @@ model.to(device)
 
 # Loss và Optimizer
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
+optimizer = optim.Adamax(model.parameters(), lr=LEARNING_RATE)
 loss_train = []
 loss_val = []
 acc_train = []
